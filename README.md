@@ -1,44 +1,42 @@
-# **Cloud.Core.FeatureFlag.LaunchDarkly**  [![Build status](https://dev.azure.com/cloudcoreproject/CloudCore/_apis/build/status/Cloud.Core/Cloud.Core.FeatureFlag.LaunchDarkly_Package)](https://dev.azure.com/cloudcoreproject/CloudCore/_build/latest?definitionId=12) ![Code Coverage](https://cloud1core.blob.core.windows.net/codecoveragebadges/Cloud.Core.FeatureFlag.LaunchDarkly-LineCoverage.png) 
-[![Cloud.Core.Configuration package in Cloud.Core feed in Azure Artifacts](https://feeds.dev.azure.com/cloudcoreproject/dfc5e3d0-a562-46fe-8070-7901ac8e64a0/_apis/public/Packaging/Feeds/8949198b-5c74-42af-9d30-e8c462acada6/Packages/e71ddf20-f66a-45da-b672-c32798cf1e51/Badge)](https://dev.azure.com/cloudcoreproject/CloudCore/_packaging?_a=package&feed=8949198b-5c74-42af-9d30-e8c462acada6&package=e71ddf20-f66a-45da-b672-c32798cf1e51&preferRelease=true)
+# **Cloud.Core.FeatureFlag.LaunchDarkly**  [![Build status](https://dev.azure.com/cloudcoreproject/CloudCore/_apis/build/status/Cloud.Core/Cloud.Core.FeatureFlag.LaunchDarkly_Package)](https://dev.azure.com/cloudcoreproject/CloudCore/_build/latest?definitionId=12) ![Code Coverage](https://cloud1core.blob.core.windows.net/codecoveragebadges/Cloud.Core.FeatureFlag.LaunchDarkly-LineCoverage.png) [![Cloud.Core.FeatureFlag.LaunchDarkly package in Cloud.Core feed in Azure Artifacts](https://feeds.dev.azure.com/cloudcoreproject/dfc5e3d0-a562-46fe-8070-7901ac8e64a0/_apis/public/Packaging/Feeds/8949198b-5c74-42af-9d30-e8c462acada6/Packages/9922dfd4-a522-4363-8f25-20e717f65596/Badge)](https://dev.azure.com/cloudcoreproject/CloudCore/_packaging?_a=package&feed=8949198b-5c74-42af-9d30-e8c462acada6&package=9922dfd4-a522-4363-8f25-20e717f65596&preferRelease=true)
 
 An implementation of the IFeatureFlag wrapper for the Launch Darkly Client.
 
 ## Usage
 
-You can explicitly add the Launch Darkly Service as follows:
+You can explicitly create the Launch Darkly Service with an SDK key as follows:
 
 ```csharp
 var ldService = new LaunchDarklyService("Launch Darkly Key");
 ```
-  
-or
-  
+
+Or allow the key to be picked up automatically from config:
+
 ```csharp
-var ldService = new LaunchDarklyService("Custom ILdClient");
+IConfiguration config = configBuilder.Build();
+
+// looks for the "LaunchDarklySdkKey" key within config.
+var ldService = new LaunchDarklyService(config); 
 ```
 
 Or you can use the service collection extension as follows:
 
 ```csharp
+
+// With a key directly.
 services.AddLaunchDarklyFeatureFlags("Launch Darkly Key");
-```
 
-or
+// With an existing client.
+services.AddLaunchDarklyFeatureFlags(new LdClient());
 
-```csharp
-services.AddLaunchDarklyFeatureFlags("Custom ILdClient")
-```
-
-If you wish to add an instance to the service collection without explicitly passing the configuration keys, you can do this:
-
-```csharp
+// Or allow it to pickup from config.
 services.AddLaunchDarklyFeatureFlags();
 ```
 This method will then take IConfiguration as an automatically resolved dependency and look for a config value of **"LaunchDarklySdkKey"** from the configuration.  You must ensure it exists!  It can be gathered from SecureVault.
 
 _**NOTE:  If used in a web API, a 404 response will be returned.  This is to indicate the method or endpoint is not available when the flag is disabled.**_
 
-## Example usage
+## Attribute Usage
 
 This can be used in the AppHost or in a WebHost.  Using the WebHost as an example, you may want an entire controller to be controlled via a feature flag.  That would be done as follows:
 
