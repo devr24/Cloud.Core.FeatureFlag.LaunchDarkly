@@ -14,29 +14,36 @@ namespace Cloud.Core.FeatureFlag.LaunchDarkly.Tests
     [IsUnit]
     public class LaunchDarklyServiceUnitTests
     {
+        /// <summary>Ensure get feature flag throws argument exception when null key is passed.</summary>
         [Fact]
-        public void LaunchDarklyService_GetFeatureFlag_KeyArgumentException()
+        public void Test_LaunchDarklyService_GetFeatureFlag_KeyArgumentException()
         {
+            // Arrange
             var mockLdClient = new Mock<ILdClient>();
             var ldService = new LaunchDarklyService(mockLdClient.Object);
             mockLdClient.Setup(m => m.Initialized()).Returns(true);
 
+            // Act/Assert
             Assert.Throws<ArgumentException>(() => ldService.GetFeatureFlag(null, false));
         }
 
+        /// <summary>Ensure constructor throws error when no sdk key is passed.</summary>
         [Fact]
-        public void LaunchDarklyService_Constructor_ThrowsErrorWhenKeyIsNull()
+        public void Test_LaunchDarklyService_Constructor_ThrowsErrorWhenKeyIsNull()
         {
+            // Arrange
             var mockLogger = new Mock<ILogger>();   
             string nullKey = null;
 
+            // Act/Assert
             Assert.Throws<ArgumentException>(() => new LaunchDarklyService(nullKey, mockLogger.Object));
         }
 
+        /// <summary>Ensure exception thrown after service is resolved and key is sought, when no sdk key was setup during DI setup.</summary>
         [Fact]
-        public void LaunchDarklyService_Constructor_DependencyInjectionResolutionException()
+        public void Test_LaunchDarklyService_Constructor_DependencyInjectionResolutionException()
         {
-            // Act - setup service collection and config.
+            // Arrange - setup service collection and config.
             var services = new ServiceCollection();
             var configBuilder = new ConfigurationBuilder();
 
@@ -49,19 +56,18 @@ namespace Cloud.Core.FeatureFlag.LaunchDarkly.Tests
 
             services.AddSingleton<IConfiguration>(config);
             services.AddLogging(loggingBuilder => loggingBuilder.AddConsole());
-
-            // Add our service singleton for testing.
             services.AddLaunchDarklyFeatureFlags();
 
+            // Act/Assert - Add our service singleton for testing.
             var prov = services.BuildServiceProvider();
-
             Assert.Throws<ArgumentException>(() => prov.GetService<IFeatureFlag>());
         }
 
+        /// <summary>Ensure get feature flag service is setup correctly for DI.</summary>
         [Fact]
-        public void LaunchDarklyService_Constructor_DependencyInjectionResolution()
+        public void Test_LaunchDarklyService_Constructor_DependencyInjectionResolution()
         {
-            // Act - setup service collection and config.
+            // Arrange
             var services = new ServiceCollection();
             var configBuilder = new ConfigurationBuilder();
 
@@ -74,71 +80,80 @@ namespace Cloud.Core.FeatureFlag.LaunchDarkly.Tests
 
             services.AddSingleton<IConfiguration>(config);
             services.AddLogging(loggingBuilder => loggingBuilder.AddConsole());
-
-            // Add our service singleton for testing.
             services.AddLaunchDarklyFeatureFlags();
 
+            // Act - Add our service singleton for testing.
             var prov = services.BuildServiceProvider();
-
             var featureFlagService = prov.GetService<IFeatureFlag>();
+            
+            // Assert
             Assert.NotNull(featureFlagService);
         }
 
+        /// <summary>Ensure error is thrown when Ld client isn't resolved.</summary>
         [Fact]
-        public void LaunchDarklyService_GetFeatureFlag_NullClientThrowsInvalidOperationException()
+        public void Test_LaunchDarklyService_GetFeatureFlag_NullClientThrowsInvalidOperationException()
         {
+            // Arrange
             var ldService = new LaunchDarklyService();
 
+            // Act/Assert
             Assert.Throws<InvalidOperationException>(() => ldService.GetFeatureFlag("A Key", false));
         }
 
-
+        /// <summary>Ensure error is thrown when Initialised returns false.</summary>
         [Fact]
-        public void LaunchDarklyService_GetFeatureFlag_NotInitialisedClientThrowsInvalidOperationException()
+        public void Test_LaunchDarklyService_GetFeatureFlag_NotInitialisedClientThrowsInvalidOperationException()
         {
+            // Arrange
             var mockLdClient = new Mock<ILdClient>();
             var ldService = new LaunchDarklyService(mockLdClient.Object);
             mockLdClient.Setup(m => m.Initialized()).Returns(false);
 
+            // Act/Assert
             Assert.Throws<InvalidOperationException>(() => ldService.GetFeatureFlag("A Key", false));
         }
 
+        /// <summary>Ensure retrieving the feature flag returns true as expected.</summary>
         [Fact]
-        public void LaunchDarklyService_GetFeatureFlag_ReturnsTrue()
+        public void Test_LaunchDarklyService_GetFeatureFlag_ReturnsTrue()
         {
-            //Arrange
+            // Arrange
             var mockLdClient = new Mock<ILdClient>();
             mockLdClient.Setup(m =>
                 m.BoolVariationDetail(It.Is<string>(x => x.Equals("Test")), It.IsAny<User>(), It.IsAny<bool>())
-            ).Returns(new EvaluationDetail<bool>(true, 0, EvaluationReason.Fallthrough.Instance));
+            ).Returns(new EvaluationDetail<bool>(true, 0, Fallthrough.Instance));
             mockLdClient.Setup(m => m.Initialized()).Returns(true);
             var ldService = new LaunchDarklyService(mockLdClient.Object, null);
 
-            //Act
+            // Act
             var result = ldService.GetFeatureFlag("Test", false);
-            //Assert
+
+            // Assert
             Assert.True(result);
         }
 
+        /// <summary>Ensure retrieving the feature flag returns false as expected.</summary>
         [Fact]
-        public void LaunchDarklyService_GetFeatureFlag_ReturnsDefault()
+        public void Test_LaunchDarklyService_GetFeatureFlag_ReturnsDefault()
         {
-            //Arrange
+            // Arrange
             var config = new Configuration().WithOffline(true);
             var ldClient = new LdClient(config);
             var ldService = new LaunchDarklyService(ldClient, null);
 
-            //Act
+            // Act
             var result = ldService.GetFeatureFlag("Test", false);
 
-            //Assert
+            // Assert
             Assert.False(result);
         }
 
+        /// <summary>Ensure error is captured in logger.</summary>
         [Fact]
-        public void LaunchDarklyService_GetFeatureFlag_LogsError()
+        public void Test_LaunchDarklyService_GetFeatureFlag_LogsError()
         {
-            //Arrange
+            // Arrange
             var mockLdClient = new Mock<ILdClient>();
             var mockLogger = new Mock<ITelemetryLogger>();
             mockLdClient.Setup(m =>
@@ -147,10 +162,10 @@ namespace Cloud.Core.FeatureFlag.LaunchDarkly.Tests
             mockLdClient.Setup(m => m.Initialized()).Returns(true);
             var ldService = new LaunchDarklyService(mockLdClient.Object, mockLogger.Object);
 
-            //Act
+            // Act
             var result = ldService.GetFeatureFlag("Test", false);
 
-            //Assert
+            // Assert
             mockLogger.Verify(m =>
                 m.Log(
                     It.IsAny<LogLevel>(),
@@ -162,10 +177,11 @@ namespace Cloud.Core.FeatureFlag.LaunchDarkly.Tests
             );
         }
 
+        /// <summary>Ensure error is captured when no logger is setup.</summary>
         [Fact]
-        public void LaunchDarklyService_GetFeatureFlag_ErrorWithNoLogger()
+        public void Test_LaunchDarklyService_GetFeatureFlag_ErrorWithNoLogger()
         {
-            //Arrange
+            // Arrange
             var mockLdClient = new Mock<ILdClient>();
             var mockLogger = new Mock<ITelemetryLogger>();
             mockLdClient.Setup(m =>
@@ -174,10 +190,10 @@ namespace Cloud.Core.FeatureFlag.LaunchDarkly.Tests
             mockLdClient.Setup(m => m.Initialized()).Returns(true);
             var ldService = new LaunchDarklyService(mockLdClient.Object);
 
-            //Act
+            // Act
             var result = ldService.GetFeatureFlag("Test", false);
 
-            //Assert
+            // Assert
             mockLogger.Verify(m =>
                 m.Log(
                     It.IsAny<LogLevel>(),

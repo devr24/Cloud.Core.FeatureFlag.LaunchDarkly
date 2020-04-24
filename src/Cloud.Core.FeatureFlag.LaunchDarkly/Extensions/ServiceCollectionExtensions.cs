@@ -5,9 +5,9 @@ using LaunchDarkly.Client;
 namespace Microsoft.Extensions.DependencyInjection
 {
     /// <summary>
-    /// Class IServiceCollectionExtensions.
+    /// Class ServiceCollection extensions.
     /// </summary>
-    public static class IServiceCollectionExtensions
+    public static class ServiceCollectionExtensions
     {
         /// <summary>
         /// Add the Launch Darkly Service using the default config.

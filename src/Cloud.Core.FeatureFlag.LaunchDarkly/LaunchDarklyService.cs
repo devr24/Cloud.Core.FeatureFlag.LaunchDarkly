@@ -30,7 +30,7 @@ namespace Cloud.Core.FeatureFlag.LaunchDarkly
         }
 
         /// <summary>
-        /// Intenal Launch Darkly Client, Will attempt to create the client when being retrieved if it failed to be initalized at start time
+        /// Internal Launch Darkly Client, Will attempt to create the client when being retrieved if it failed to be initialised at start time
         /// </summary>
         internal ILdClient LdClient
         {
@@ -45,7 +45,7 @@ namespace Cloud.Core.FeatureFlag.LaunchDarkly
                     }
                     catch (Exception ex)
                     {
-                        _logger?.LogError(ex, "Exception occured when initialising Launch Darkly Client");
+                        _logger?.LogError(ex, "Exception occured when initialised Launch Darkly Client");
                     }
                 }
 
@@ -61,7 +61,9 @@ namespace Cloud.Core.FeatureFlag.LaunchDarkly
             var ldKey = config.GetValue<string>("LaunchDarklySdkKey");
 
             if (ldKey.IsNullOrEmpty())
+            {
                 throw new ArgumentException("Launch Darkly key cannot be resolved from IConfiguration (looking for \"LaunchDarklySdkKey\")");
+            }
 
             _key = ldKey;
             _logger = logger;
@@ -75,7 +77,9 @@ namespace Cloud.Core.FeatureFlag.LaunchDarkly
         public LaunchDarklyService(string ldKey, ILogger logger = null)
         {
             if (ldKey.IsNullOrEmpty())
+            {
                 throw new ArgumentException("Launch Darkly key cannot be null or empty");
+            }
 
             _key = ldKey;
             _logger = logger;
@@ -88,13 +92,17 @@ namespace Cloud.Core.FeatureFlag.LaunchDarkly
         /// <param name="defaultValue">Value if no flag is found or something goes wrong.</param>
         /// <returns>Boolean [true] if flag is enabled, [false] if not.</returns>
         public bool GetFeatureFlag(string key, bool defaultValue)
-        {            
-            if (LdClient == null || !LdClient.Initialized())                
+        {
+            if (LdClient == null || !LdClient.Initialized())
+            {
                 throw new InvalidOperationException("Launch Darkly Client is not initialized.");
+            }
 
             // Ensure the key and user are set before trying to execute.
             if (string.IsNullOrEmpty(key))
+            {
                 throw new ArgumentException(nameof(key), "Feature flag key must be set");
+            }
 
             var featureFlagResponse = LdClient.BoolVariationDetail(key, User.WithKey(AppDomain.CurrentDomain.FriendlyName), defaultValue);
 

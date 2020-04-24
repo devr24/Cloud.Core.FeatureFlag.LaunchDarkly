@@ -8,10 +8,11 @@ using Xunit;
 namespace Cloud.Core.FeatureFlag.LaunchDarkly.Tests
 {
     [IsUnit]
-    public class IServiceCollectionExtensionsUnitTests
+    public class ServiceCollectionExtensionsUnitTests
     {
+        /// <summary>Verify the extension method added the IFeatureFlag as expected when sdk key is passed.</summary>
         [Fact]
-        public void LaunchDarklyService_AddIFeatureFlagDependencyUsingldKey()
+        public void Test_ServiceCollection_AddIFeatureFlagDependencyUsingldKey()
         {
             //Arrange
             IServiceCollection services = new ServiceCollection();
@@ -27,8 +28,9 @@ namespace Cloud.Core.FeatureFlag.LaunchDarkly.Tests
             Assert.True(featureFlagExists);
         }
 
+        /// <summary>Verify the extension method added the IFeatureFlag as expected when sdk client passed.</summary>
         [Fact]
-        public void LaunchDarklyService_AddIFeatureFlagDependencyUsingILdClient()
+        public void Test_ServiceCollection_AddIFeatureFlagDependencyUsingILdClient()
         {
             //Arrange
             IServiceCollection services = new ServiceCollection();

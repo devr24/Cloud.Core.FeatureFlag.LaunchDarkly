@@ -240,6 +240,7 @@ FakesAssemblies/
 **/*.Server/ModelManifest.xml
 _Pvt_Extensions
 
+**/Cloud.Core.*.xml
 # Paket dependency manager
 .paket/paket.exe
 paket-files/
@@ -252,3 +253,4 @@ paket-files/
 *.sln.iml
 /src/Tests/coverage.json
 /src/Tests/coverage.opencover.xml
+Cloud.Core*.xml
