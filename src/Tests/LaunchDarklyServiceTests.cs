@@ -12,7 +12,7 @@ using static LaunchDarkly.Client.EvaluationReason;
 namespace Cloud.Core.FeatureFlag.LaunchDarkly.Tests
 {
     [IsUnit]
-    public class LaunchDarklyServiceUnitTests
+    public class LaunchDarklyServiceTests
     {
         /// <summary>Ensure get feature flag throws argument exception when null key is passed.</summary>
         [Fact]

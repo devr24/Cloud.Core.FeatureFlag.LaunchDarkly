@@ -8,7 +8,7 @@ using Xunit;
 namespace Cloud.Core.FeatureFlag.LaunchDarkly.Tests
 {
     [IsUnit]
-    public class ServiceCollectionExtensionsUnitTests
+    public class ServiceCollectionExtensionsTests
     {
         /// <summary>Verify the extension method added the IFeatureFlag as expected when sdk key is passed.</summary>
         [Fact]

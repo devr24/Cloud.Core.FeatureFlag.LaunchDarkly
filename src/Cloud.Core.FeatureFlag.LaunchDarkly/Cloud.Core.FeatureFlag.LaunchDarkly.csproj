@@ -7,13 +7,13 @@
     <Description>Launch Darkly implementation for system feature flags.</Description>
     <ApplicationIcon></ApplicationIcon>
     <PackageIconUrl>https://cloud1core.blob.core.windows.net/icons/CC.png</PackageIconUrl>
-    <Company>Robert McCabe</Company>
+    <Company>Aylesbury Solutions Ltd</Company>
     <Copyright>Aylesbury Solutions Ltd</Copyright>
     <Version>3.1</Version>
     <IsPackable>true</IsPackable>
     <PackageId>Cloud.Core.FeatureFlag.LaunchDarkly</PackageId>
     <ProjectGuid>{A700C4E6-581E-4996-A136-0F494673DB4B}</ProjectGuid>
-    <RepositoryUrl>https://github.com/rmccabe24/Cloud.Core.FeatureFlag.LaunchDarkly</RepositoryUrl>
+    <RepositoryUrl>Cloud.Core.FeatureFlag.LaunchDarkly</RepositoryUrl>
     <RepositoryType>Private</RepositoryType>
     <DocumentationFile>Cloud.Core.FeatureFlag.LaunchDarkly.xml</DocumentationFile>
   </PropertyGroup>

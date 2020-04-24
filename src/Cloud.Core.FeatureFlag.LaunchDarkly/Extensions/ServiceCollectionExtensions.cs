@@ -1,9 +1,9 @@
-﻿using Cloud.Core;
-using Cloud.Core.FeatureFlag.LaunchDarkly;
-using LaunchDarkly.Client;
-
-namespace Microsoft.Extensions.DependencyInjection
+﻿namespace Microsoft.Extensions.DependencyInjection
 {
+    using Cloud.Core;
+    using Cloud.Core.FeatureFlag.LaunchDarkly;
+    using LaunchDarkly.Client;
+
     /// <summary>
     /// Class ServiceCollection extensions.
     /// </summary>
