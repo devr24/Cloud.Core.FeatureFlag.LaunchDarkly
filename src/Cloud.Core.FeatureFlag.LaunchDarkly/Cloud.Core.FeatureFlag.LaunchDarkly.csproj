@@ -5,7 +5,7 @@
     <PackageTags>Cloud.Core.FeatureFlag.LaunchDarkly Azure .net-Core Core .netstandard 2.1 LaunchDarkly FeatureFlag Flags</PackageTags>
     <Authors>Robert McCabe</Authors>
     <Description>Launch Darkly implementation for system feature flags.</Description>
-    <ApplicationIcon></ApplicationIcon>
+	<PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
     <PackageIconUrl>https://cloud1core.blob.core.windows.net/icons/CC.png</PackageIconUrl>
     <Company>Aylesbury Solutions Ltd</Company>
     <Copyright>Aylesbury Solutions Ltd</Copyright>
@@ -16,10 +16,17 @@
     <RepositoryUrl>Cloud.Core.FeatureFlag.LaunchDarkly</RepositoryUrl>
     <RepositoryType>Private</RepositoryType>
     <DocumentationFile>Cloud.Core.FeatureFlag.LaunchDarkly.xml</DocumentationFile>
+	  <PackageReleaseNotes>
+		  Full API Documentation can be found here:
+		  https://cloud1core.blob.core.windows.net/docs/Cloud.Core.FeatureFlag.LaunchDarkly/api/index.html
+	  </PackageReleaseNotes>
+	  <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
+	  <PackageProjectUrl>https://dev.azure.com/cloudcoreproject/CloudCore/</PackageProjectUrl>
+	  <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Cloud.Core" Version="3.1.3524.402" />
+    <PackageReference Include="Cloud.Core" Version="3.1.3530.471" />
     <PackageReference Include="LaunchDarkly.Client" Version="5.6.3" />
   </ItemGroup>
 
